@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  email String @unique
+}
+
+model Form {
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  type             String
+  label            String
+  selectOptions    Json?
+  files            Json?
+  singleFileUpload Boolean @default(false)
+  fileTypes        Json?
+  checkBoxOptions  Json?
+  radioOptions     Json?
+  placeholder      String?
+  required         Boolean
+  value            String?
+  errorMessage     String?
+  validation       Json?
+
+  @@map("forms")
+}
