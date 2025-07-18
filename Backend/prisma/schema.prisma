@@ -13,8 +13,16 @@ model User {
   email String @unique
 }
 
+model Project {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  form Form[]
+}
+
 model Form {
   id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  projectId        String  @db.ObjectId
+  project          Project @relation(fields: [projectId], references: [id])
   type             String
   label            String
   selectOptions    Json?

@@ -49,12 +49,12 @@ const ViewPage = () => {
     {/* ######################## */}
     {element.type === "radio" && element.radioOptions && (
       <>
-    <Label>{element.label}</Label>
+    <Label>{element.label}{element.required && <span className="text-red-500">*</span>}</Label>
 
 {     element.radioOptions.map((option)=>(
        <div className="flex items-center gap-4 justify-start">
      <input type="radio" id={element.label} name={element.label} />
-      <label>{option.value}{element.required && <span className="text-red-500">*</span>}</label>
+      <label>{option.value}</label>
       </div>
      ))  }
 

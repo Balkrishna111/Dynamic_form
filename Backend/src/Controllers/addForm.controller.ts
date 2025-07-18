@@ -1,88 +1,49 @@
+import { Form } from "@prisma/client";
 import { Response, Request, RequestHandler } from "express";
-import {
-  addForm,
-  getForm,
-  deleteForm,
-  updateForm,
-} from "../Repositories/formRepo"; // Adjust the import path as necessary
+import { IFormService } from "Interfaces/IFormService";
+import { FormService } from "Services/FormService";
 
-export const getFormController: RequestHandler = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const result = await getForm();
-    if (!result) {
-      res.status(404).json({ message: "Form not found" });
+export class FormController {
+  private service: IFormService = new FormService();
+  getForm: RequestHandler = async (req: Request, res: Response) => {
+    try {
+      const allFormData = await this.service.getForms();
+      res.status(200).json({
+        message: "Form retrieved successfully",
+        result: allFormData,
+      });
+    } catch (err) {
+      res.status(500).json({ error: err as string });
     }
-    res.status(200).json({
-      message: "Form retrieved successfully",
-      result: result,
-    });
-  } catch (error) {
-    console.error("Error in getFormController:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
+  };
 
-export const addFormController: RequestHandler = async (
-  req: Request,
-  res: Response
-) => {
-  try {
+  addForm: RequestHandler = async (req: Request, res: Response) => {
     const formData = req.body;
-    const result = await addForm(formData);
-    res.status(201).json({
-      message: "Form added successfully",
-      result: result,
-    });
-  } catch (err) {
-    console.log("Error in addFormController:", err);
-    res.status(500).json({
-      message: "error in addFormController",
-      error: err,
-    });
-  }
-};
+    try {
+      const addedForm = await this.service.addForm(formData as Form);
+      res.status(201).json(addedForm);
+    } catch (err) {
+      res.status(500).json(err as string);
+    }
+  };
 
-export const updateFormController: RequestHandler = async (
-  req: Request,
-  res: Response
-) => {
-  try {
+  deleteForm: RequestHandler = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const formData = req.body;
-    const result = await updateForm(id, formData);
-    res.status(200).json({
-      message: "Form updated successfully",
-      result: result,
-    });
-  } catch (err) {
-    console.log("Error in updateFormController:", err);
-    res.status(500).json({
-      message: "error in updateFormController",
-      error: err,
-    });
-  }
-};
+    try {
+      const deletedItem = await this.service.deleteForm(id as string);
+      res.status(200).json({ deletedItem });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  };
 
-export const deleteFormController: RequestHandler = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const { elementId } = req.params;
-    console.log("delete id: ", elementId);
-    const result = await deleteForm(elementId);
-    res.status(201).json({
-      message: "Form added successfully",
-      result: result,
-    });
-  } catch (err) {
-    console.log("Error in deleteFormController:", err);
-    res.status(500).json({
-      message: "error in deleteFormController",
-      error: err,
-    });
-  }
-};
+  updateForm: RequestHandler = async (req: Request, res: Response) => {
+    const formData = req.body;
+    try {
+      const updatedForm = await this.service.updateForm(formData as Form);
+      res.status(200).json(updatedForm);
+    } catch (err) {
+      res.status(500).json(err as string);
+    }
+  };
+}

@@ -38,7 +38,6 @@ const EditFormModalComponent = ({element} : {element : FormElementType}) => {
     const [checkBoxOption, setCheckBoxOption] = useState<{name: string, value: string}>()
     const [fileUpload, setFileUpload] = useState<File | File[]>()
     const [formElement, setFormElement] = useState<SingleFormElement>({
-        // id: '',
         type: "text",
         label: "",
         selectOptions: [],

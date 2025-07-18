@@ -1,27 +1,25 @@
 import prisma from "Config/prismaClient";
+import { IFormRepo } from "./Interrfaces/IFormRepo";
+import { Form } from "@prisma/client";
 
-export function addForm(formData: any) {
-  return prisma.form.create({
-    data: formData,
-  });
-}
-export async function getForm() {
-  const result = await prisma.form.findMany();
-  // return JSON.parse(JSON.stringify(result));
-  return result;
-}
+export class FormRepoClass implements IFormRepo {
+  async getAllForms() {
+    return await prisma.form.findMany();
+  }
 
-export async function deleteForm(id: string) {
-  const result = await prisma.form.delete({ where: { id: id } });
-  // return JSON.parse(JSON.stringify(result));
-  return result;
-}
+  async addForm(formData: Form) {
+    return await prisma.form.create({ data: formData });
+  }
 
-export async function updateForm(id: string, formData: any) {
-  const { id: _, ...dataWithoutId } = formData;
-  const result = await prisma.form.update({
-    where: { id: id },
-    data: dataWithoutId,
-  });
-  return result;
+  async deleteForm(id: string) {
+    return await prisma.form.delete({ where: { id: id } });
+  }
+
+  async updateForm(formData: Form) {
+    const { id: _, ...dataWithoutId } = formData;
+    return await prisma.form.update({
+      where: { id: formData.id as string },
+      data: dataWithoutId,
+    });
+  }
 }

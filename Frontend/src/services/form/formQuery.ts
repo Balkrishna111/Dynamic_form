@@ -1,4 +1,5 @@
 "use client";
+import { FormElementType } from "@/app/(admin)/(others-pages)/createForm/page";
 import apiClient from "../apiClient";
 
 export const getFormData = async () => {
@@ -10,7 +11,7 @@ export const getFormData = async () => {
         throw error;
     }
 };
-export const postFormElement = async (formData : any) => {
+export const postFormElement = async (formData : FormElementType) => {
     try {
         const response = await apiClient.post("/form/addForm", {
             ...formData
@@ -22,7 +23,7 @@ export const postFormElement = async (formData : any) => {
     }
 };
 
-export const updateFormElement = async (formData : any) => {
+export const updateFormElement = async (formData : FormElementType) => {
     try {
         const response = await apiClient.put(`/form/updateForm/${formData.id}`, {
             ...formData

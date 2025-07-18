@@ -50,25 +50,24 @@ const CreateForm = () => {
     useEffect(() => {
         console.log(formElements)
     }, [formElements])
+
     return (
+
         <div>
             <PageBreadcrumb pageTitle="View Form" />
 
             <div>
                 <div className="flex justify-end items-center">
-                    <Button variant="primary" children={"Add Element"} size="sm" onClick={() => setIsFormActive(prev => !prev)} />
+                    <Button variant="primary"  size="sm" onClick={() => setIsFormActive(prev => !prev)}>Add Element</Button>
                 </div>
                 <div className="my-8">
 
-                    {
-                        isLoading && (
-                            <p>Loading...</p>
-                        )
-                    }
-
-                    {formElements.length > 0 && (
+                    {isLoading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        formElements.length > 0 &&
                         formElements.map((element) => (
-                            <FormElementCard element={element} />
+                            <FormElementCard key={element.id} element={element} />
                         ))
                     )}
                 </div>
