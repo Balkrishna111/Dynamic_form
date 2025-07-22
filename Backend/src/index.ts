@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import prisma from "Config/prismaClient";
 import formRoutes from "./Routes/form.route"; // Adjust the import path as necessary
+import projectRoutes from "./Routes/project.route"; // Adjust the import path as necessary
 import cors from "cors";
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello from Express + Prisma + MongoDB!");
 });
 app.use("/form", formRoutes);
+app.use("/project", projectRoutes);
 
 app.post("/api/users", async (req: Request, res: Response) => {
   const { name, email } = req.body;

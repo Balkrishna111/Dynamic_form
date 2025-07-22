@@ -11,12 +11,14 @@ model User {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   name  String
   email String @unique
+  password String
+  refreshToken String
 }
 
 model Project {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  form Form[]
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  formElements Form[]
 }
 
 model Form {
