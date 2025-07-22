@@ -3,10 +3,9 @@ import Input from "@/components/form/input/InputField"
 import Radio from "@/components/form/input/Radio";
 import Label from "@/components/form/Label"
 import Select from "@/components/form/Select"
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { FormElementsType, FormElementType } from "./page";
-import { v4 as uuidv4 } from 'uuid';
-import { useMutation } from "@tanstack/react-query";
+import {useEffect, useState } from "react";
+import { FormElementType } from "./page";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateFormElement } from "@/services/form/formQuery";
 
 type SingleFormElement = {
@@ -32,7 +31,7 @@ type SingleFormElement = {
     }
 
 const EditFormModalComponent = ({element} : {element : FormElementType}) => {
-    
+    const queryClient = useQueryClient()
     const [selectOption, setSelectOption] = useState<string>("")
     const [radioOption, setRadioOption] = useState<{name: string, value: string}>()
     const [checkBoxOption, setCheckBoxOption] = useState<{name: string, value: string}>()
@@ -67,7 +66,8 @@ const EditFormModalComponent = ({element} : {element : FormElementType}) => {
 const {mutate: mutateFormElement, isPending} = useMutation({
     mutationFn: () => updateFormElement(formElement),
     onSuccess : () =>{
-        location.reload()
+          queryClient.invalidateQueries({ queryKey: ["form"] });
+  queryClient.invalidateQueries({ queryKey: ["project"] });
     }
 })
 

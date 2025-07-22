@@ -34,6 +34,11 @@ const navItems: NavItem[] = [
   },
     {
     icon: <CalenderIcon />,
+    name: "Projects",
+    path: "/projects",
+  },
+    {
+    icon: <CalenderIcon />,
     name: "Create Form",
     path: "/createForm",
   },
@@ -41,6 +46,11 @@ const navItems: NavItem[] = [
     icon: <UserCircleIcon />,
     name: "View Form",
     path: "/viewForm",
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "Login",
+    path: "/login",
   },
   {
     icon: <CalenderIcon />,

@@ -11,9 +11,8 @@ const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false)
     const {mutate: deleteFormElementMutation} = useMutation({
         mutationFn: () => deleteFormElement(element.id || ""),
         onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ['form']
-            })
+            queryClient.invalidateQueries({ queryKey: ["form"] });
+  queryClient.invalidateQueries({ queryKey: ["project"] });
         }
 
     })

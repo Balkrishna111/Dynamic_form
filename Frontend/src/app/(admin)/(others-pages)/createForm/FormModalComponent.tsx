@@ -6,11 +6,12 @@ import Select from "@/components/form/Select"
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FormElementsType } from "./page";
 import { v4 as uuidv4 } from 'uuid';
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postFormElement } from "@/services/form/formQuery";
 
 type SingleFormElement = {
         id?: string;
+        projectId: string | undefined,
         type: string;
         label: string;
         selectOptions?: string[]; // For select or radio inputs
@@ -31,14 +32,20 @@ type SingleFormElement = {
         errorMessage?: string; // For displaying validation errors
     }
 
-const FormModalComponent = ({setFormElements} : {setFormElements : Dispatch<SetStateAction<FormElementsType>>}) => {
-    
+
+    type PropsT = {
+      setFormElements: Dispatch<SetStateAction<FormElementsType>>,
+      projectId?: string
+    }
+const FormModalComponent = ({setFormElements, projectId} : PropsT) => {
+    const queryClient = useQueryClient()
     const [selectOption, setSelectOption] = useState<string>("")
     const [radioOption, setRadioOption] = useState<{name: string, value: string}>()
     const [checkBoxOption, setCheckBoxOption] = useState<{name: string, value: string}>()
     const [fileUpload, setFileUpload] = useState<File | File[]>()
     const [formElement, setFormElement] = useState<SingleFormElement>({
         // id: '',
+        projectId: projectId,
         type: "text",
         label: "",
         selectOptions: [],
@@ -61,6 +68,9 @@ const FormModalComponent = ({setFormElements} : {setFormElements : Dispatch<SetS
 
 const {mutate: mutateFormElement} = useMutation({
     mutationFn: () => postFormElement(formElement),
+    onSuccess: ()=> queryClient.invalidateQueries({
+      queryKey: ["project"]
+    })
 })
 
   return (
